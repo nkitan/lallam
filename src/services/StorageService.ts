@@ -8,17 +8,19 @@ import { Conversation, Message, AppSettings } from '../types';
 
 // Try to use MMKV for better performance, fallback to AsyncStorage
 let storage: any;
-try {
-  const { MMKV } = require('react-native-mmkv');
-  const mmkv = new MMKV();
-  storage = {
-    getItem: (key: string) => mmkv.getString(key) ?? null,
-    setItem: (key: string, value: string) => mmkv.set(key, value),
-    removeItem: (key: string) => mmkv.delete(key),
-  };
-} catch {
-  storage = AsyncStorage;
-}
+// TODO: Re-enable MMKV once it's compatible with React Native 0.80.0
+// try {
+//   const { MMKV } = require('react-native-mmkv');
+//   const mmkv = new MMKV();
+//   storage = {
+//     getItem: (key: string) => mmkv.getString(key) ?? null,
+//     setItem: (key: string, value: string) => mmkv.set(key, value),
+//     removeItem: (key: string) => mmkv.delete(key),
+//   };
+// } catch {
+//   storage = AsyncStorage;
+// }
+storage = AsyncStorage;
 
 const CONVERSATIONS_KEY = 'llamachat_conversations';
 const MESSAGES_PREFIX = 'llamachat_messages_';

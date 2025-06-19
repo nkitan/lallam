@@ -137,18 +137,21 @@ export const useLLMStore = create<LLMStore>()(
       name: 'llm-storage',
       storage: createJSONStorage(() => {
         // Use the same storage as chat store
-        try {
-          const { MMKV } = require('react-native-mmkv');
-          const storage = new MMKV();
-          return {
-            getItem: (key: string) => storage.getString(key) ?? null,
-            setItem: (key: string, value: string) => storage.set(key, value),
-            removeItem: (key: string) => storage.delete(key),
-          };
-        } catch {
-          const AsyncStorage = require('@react-native-async-storage/async-storage').default;
-          return AsyncStorage;
-        }
+        // TODO: Re-enable MMKV once it's compatible with React Native 0.80.0
+        // try {
+        //   const { MMKV } = require('react-native-mmkv');
+        //   const storage = new MMKV();
+        //   return {
+        //     getItem: (key: string) => storage.getString(key) ?? null,
+        //     setItem: (key: string, value: string) => storage.set(key, value),
+        //     removeItem: (key: string) => storage.delete(key),
+        //   };
+        // } catch {
+        //   const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+        //   return AsyncStorage;
+        // }
+        const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+        return AsyncStorage;
       }),
       partialize: (state) => ({
         config: state.config,

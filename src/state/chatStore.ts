@@ -235,19 +235,22 @@ export const useChatStore = create<ChatStore>()(
         name: 'chat-storage',
         storage: createJSONStorage(() => {
           // Use MMKV for faster storage if available, fallback to AsyncStorage
-          try {
-            const { MMKV } = require('react-native-mmkv');
-            const storage = new MMKV();
-            return {
-              getItem: (key: string) => storage.getString(key) ?? null,
-              setItem: (key: string, value: string) => storage.set(key, value),
-              removeItem: (key: string) => storage.delete(key),
-            };
-          } catch {
-            // Fallback to AsyncStorage
-            const AsyncStorage = require('@react-native-async-storage/async-storage').default;
-            return AsyncStorage;
-          }
+          // TODO: Re-enable MMKV once it's compatible with React Native 0.80.0
+          // try {
+          //   const { MMKV } = require('react-native-mmkv');
+          //   const storage = new MMKV();
+          //   return {
+          //     getItem: (key: string) => storage.getString(key) ?? null,
+          //     setItem: (key: string, value: string) => storage.set(key, value),
+          //     removeItem: (key: string) => storage.delete(key),
+          //   };
+          // } catch {
+          //   // Fallback to AsyncStorage
+          //   const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+          //   return AsyncStorage;
+          // }
+          const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+          return AsyncStorage;
         }),
         partialize: (state) => ({
           conversations: state.conversations.slice(0, 100), // Limit stored conversations
